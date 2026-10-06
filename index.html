@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#173b35">
+    <meta name="description" content="Materials overview for K-12 labs and kits.">
+    <title>Labs &amp; Kits Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Labs and Kits Dashboard home">
+        <span class="brand-mark" aria-hidden="true">LK</span>
+        <span>Labs <span class="brand-amp">&amp;</span> Kits</span>
+      </a>
+      <span class="workspace-label">Materials workspace</span>
+    </header>
+
+    <main class="page-shell">
+      <div class="page-heading">
+        <p class="eyebrow">K-12 CURRICULUM MATERIALS</p>
+        <h1>Labs &amp; Kits Dashboard</h1>
+        <p class="intro">A clear view of the materials behind every classroom experience.</p>
+      </div>
+
+      <section class="status-panel" aria-labelledby="source-heading">
+        <div class="status-copy">
+          <div class="status-label">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>DATA SOURCE</span>
+          </div>
+          <h2 id="source-heading">No verified workbook is connected</h2>
+          <p class="status-description">
+            Inventory and material requirements will appear after the source workbook and its quantity rules are verified.
+            This baseline does not estimate or substitute missing data.
+          </p>
+        </div>
+
+        <dl class="data-summary" aria-label="Current data availability">
+          <div class="summary-row">
+            <dt>Materials catalog</dt>
+            <dd>Unavailable</dd>
+          </div>
+          <div class="summary-row">
+            <dt>Stock comparison</dt>
+            <dd>Not calculated</dd>
+          </div>
+          <div class="summary-row">
+            <dt>Quantity rules</dt>
+            <dd>Unverified</dd>
+          </div>
+        </dl>
+      </section>
+
+      <aside class="integrity-note" aria-label="Data integrity notice">
+        <span class="note-rule" aria-hidden="true"></span>
+        <p><strong>Source integrity</strong> Missing values will stay visible as missing; they will not be treated as zero.</p>
+      </aside>
+
+      <footer class="page-footer">
+        <span>Labs &amp; Kits</span>
+        <span>Project baseline · October 2026</span>
+      </footer>
+    </main>
+  </body>
+</html>
