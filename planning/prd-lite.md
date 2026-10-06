@@ -10,17 +10,23 @@ The primary user is an instructional designer planning K-12 lab and kit curricul
 
 ## In-Scope First Slice
 
-- Use one owner-approved materials workbook as the source for the first supported dataset.
-- Select one lab or kit and enter a class size.
-- Calculate material requirements using rules verified against the workbook and its owner.
-- Compare required amounts with on-hand quantities only when the workbook provides compatible stock and unit data.
-- Clearly report missing, ambiguous, or malformed inputs instead of inventing values.
+- Load one owner-approved workbook locally and read the `Grade K` through `Grade 5` sheets with a separate header mapping for each grade.
+- Select a grade and activity and enter a positive whole-number class size.
+- Calculate quantities only for explicitly supported source expressions: `n/student` scales by class size; `n/class` remains fixed per class. Preserve any stated unit such as `pair`.
+- Show source wording and a clear unresolved status for blanks, bare numbers, ranges, per-group quantities, approximations, or other unsupported expressions; never guess a scaling basis. Grade 1-2 per-group quantities remain uncalculated until group size and rounding are defined.
+- Keep the source workbook read-only and in the user's browser; do not upload it to a server in this first slice.
 
-Workbook import mechanics, hosting, and shared publication are not yet specified. The attached workbook has not been inspectable in the workspace, so workbook fields, formula semantics, units, and rounding behavior remain unconfirmed. This first slice must be narrowed or revised if source review shows the workflow cannot be supported safely.
+### Source Evidence and Constraints
+
+The reviewed workbook has nine sheets, no spreadsheet formulas, and no on-hand stock fields. Its grade sheets contain 97 Grade K, 125 Grade 1, 159 Grade 2, 152 Grade 3, 209 Grade 4, and 193 Grade 5 populated rows. Meaningful source rows end between worksheet rows 99 and 211; the browser parser is capped at row 250 per sheet. Grade 1 uses `Qty./group` in column Q, Grade 2 uses `Quantity per Group` in column P, Grades K and 3-4 use `Qty.` in column Q, and Grade 5 uses `Qty.` in column R. Grade 5 also shifts the activity, teacher-page material, and nomenclature fields to J, O, and P. The other grades use different columns/headings for some metadata, so the implementation maps each sheet by headers. The pilot remains a requirements calculator, not a stock-availability dashboard; stock shortfalls cannot be calculated from this source.
+
+The repository is public and currently tracks a copy of the workbook at its root. Public-data permission must be confirmed. Local browser-only workbook reading is the planned prototype boundary; shared publication, authentication, and hosting still require an approved internal design.
 
 ## Out of Scope
 
 - Editing inventory counts or writing changes back to the source workbook.
+- Comparing requirements with on-hand stock, showing shortages, or claiming materials are available; the workbook has no stock quantities.
+- Calculating per-group quantities before group size and partial-group rounding are defined.
 - Concurrent stock editing, user roles, or authentication implementation.
 - External stakeholder access, SSO, or integration with purchasing and warehouse systems.
 - Purchase orders, replenishment recommendations, or automated substitutions.
@@ -28,6 +34,6 @@ Workbook import mechanics, hosting, and shared publication are not yet specified
 
 ## Assumptions and Validation Checkpoints
 
-1. **The workbook contains identifiable records that can be related to a lab/kit, materials, quantities, and units.** Validate by reviewing its sheets, headers, identifiers, and representative rows with the owner. The workbook is not currently accessible for this review.
-2. **Required amounts can be derived deterministically from class size and documented material rules.** Validate by tracing the workbook formulas/rules and hand-checking at least one ordinary and one boundary class-size example with the owner, including team-size and rounding behavior if applicable.
-3. **One designated owner can publish a canonical dataset for internal stakeholders using an approved hosting and access model.** Validate with the owner and IT before choosing persistence, permissions, and deployment; the hosting mechanism remains undecided.
+1. **The six grade-sheet activity and teacher-page material columns are the intended source view.** Validate each header mapping and the quantity semantics with the workbook owner before operational use.
+2. **Only explicit per-student and per-class expressions are candidates for scaling.** Validate `1/student`, `1/class`, and unit-bearing variants with the owner; hand-check class sizes 1 and a representative larger class for each grade. Grade 1-2 group quantities, bare values, and all other forms remain uncalculated until rules are agreed.
+3. **A local read-only prototype is useful before shared publishing is designed.** Validate the local workflow with the instructional designer, and separately confirm with IT that the workbook may remain in the public GitHub repository and identify an approved internal hosting/access model.

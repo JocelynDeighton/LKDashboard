@@ -30,38 +30,107 @@
             <span class="status-dot" aria-hidden="true"></span>
             <span>DATA SOURCE</span>
           </div>
-          <h2 id="source-heading">No verified workbook is connected</h2>
+          <h2 id="source-heading">Choose a workbook to begin</h2>
           <p class="status-description">
-            Inventory and material requirements will appear after the source workbook and its quantity rules are verified.
-            This baseline does not estimate or substitute missing data.
+            The workbook is read in this browser and is not uploaded. Stock-on-hand is not included in the source.
           </p>
         </div>
 
         <dl class="data-summary" aria-label="Current data availability">
           <div class="summary-row">
-            <dt>Materials catalog</dt>
-            <dd>Unavailable</dd>
+            <dt>Workbook</dt>
+            <dd id="summary-file">Not loaded</dd>
+          </div>
+          <div class="summary-row">
+            <dt>Selected-grade entries</dt>
+            <dd id="summary-records">Not loaded</dd>
           </div>
           <div class="summary-row">
             <dt>Stock comparison</dt>
-            <dd>Not calculated</dd>
-          </div>
-          <div class="summary-row">
-            <dt>Quantity rules</dt>
-            <dd>Unverified</dd>
+            <dd>Not available</dd>
           </div>
         </dl>
       </section>
 
+      <section class="workflow" aria-labelledby="review-heading">
+        <div class="workflow-heading">
+          <p class="eyebrow">GRADES K-5 PILOT</p>
+          <h2 id="review-heading">Review material requirements</h2>
+          <p class="workflow-intro">Source wording stays visible. Missing and unscoped quantities are never treated as zero.</p>
+        </div>
+
+        <div class="file-row">
+          <div class="file-copy">
+            <label for="workbook-file">Workbook file</label>
+            <p class="field-help" id="file-help">Choose an .xlsx file. Up to 250 rows per grade worksheet are inspected.</p>
+          </div>
+          <input class="file-input" id="workbook-file" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-describedby="file-help">
+        </div>
+
+        <p class="workflow-message" id="import-message" role="status" aria-live="polite">Waiting for a workbook.</p>
+        <div class="source-warning" id="source-warning" role="note" hidden></div>
+
+        <form class="review-form" id="review-form" novalidate>
+          <div class="control-grid">
+            <div class="form-field">
+              <label for="grade-select">Grade</label>
+              <select id="grade-select" required disabled>
+                <option value="">Load a workbook first</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="activity-select">Activity</label>
+              <select id="activity-select" required disabled>
+                <option value="">Load a workbook first</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="class-size">Students in class</label>
+              <input id="class-size" type="number" min="1" step="1" inputmode="numeric" required disabled aria-describedby="calculation-note">
+            </div>
+          </div>
+
+          <label class="confirmation-row" for="owner-confirmation">
+            <input id="owner-confirmation" type="checkbox" disabled>
+            <span>I verified the quantity rules for this grade with the workbook owner.</span>
+          </label>
+          <p class="field-help" id="calculation-note">Calculations remain locked until the quantity rules are verified.</p>
+          <button class="action-button" id="calculate-button" type="submit" disabled>Calculate supported quantities</button>
+        </form>
+
+        <section class="results" aria-labelledby="results-heading">
+          <div class="results-heading">
+            <h3 id="results-heading">Source materials</h3>
+            <p id="results-summary" role="status" aria-live="polite">Load a workbook to inspect its Grade K entries.</p>
+          </div>
+          <div class="table-wrap">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th scope="col">Teacher-page material</th>
+                  <th scope="col">Nomenclature</th>
+                  <th scope="col">Source quantity</th>
+                  <th scope="col">Interpretation</th>
+                  <th scope="col">Class requirement</th>
+                </tr>
+              </thead>
+              <tbody id="results-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
       <aside class="integrity-note" aria-label="Data integrity notice">
         <span class="note-rule" aria-hidden="true"></span>
-        <p><strong>Source integrity</strong> Missing values will stay visible as missing; they will not be treated as zero.</p>
+        <p><strong>Source integrity</strong> This pilot does not calculate inventory availability, stock shortfalls, or quantities with an unverified basis.</p>
       </aside>
 
       <footer class="page-footer">
         <span>Labs &amp; Kits</span>
-        <span>Project baseline · October 2026</span>
+        <span>Local, read-only Grades K-5 pilot</span>
       </footer>
     </main>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
+    <script src="app.js" defer></script>
   </body>
 </html>

@@ -1,7 +1,7 @@
 # Phase 1–2 Plan: Labs & Kits Dashboard
 
 **Updated:** 2026-10-06
-**Status:** Phase 1 baseline committed as `fdfaecb`; Phase 2 planning documents are created, with workbook-grounded discovery pending workspace access.
+**Status:** Phase 1 baseline and Phase 2 scope are committed and pushed in `73c174a`. Workbook-grounded discovery and Phase 3 execution planning are complete; Phase 4 awaits review and confirmation.
 
 ## Goal
 
@@ -37,12 +37,18 @@ Establish a beginner-friendly project baseline and document a testable first sli
 - No workbook-specific fields, quantities, or formulas are represented as confirmed until the source is inspectable.
 
 ## Current Blocker
+## Workbook Findings
 
-The attached `Copy of Texas K-5 Materials Tracker.xlsx` is not present as a readable workspace file. The attachment view exposed only the ZIP/XLSX header, not worksheet contents. A local, reviewable copy is needed at `data/Copy of Texas K-5 Materials Tracker.xlsx` before the schema and quantity rules can be verified.
+- The workbook has nine worksheets: `Change Tracker`, `Grade K` through `Grade 5`, `Material Types`, and `Sheet1`.
+- No worksheet contains Excel formulas or an on-hand/available-stock field. It is a curriculum materials tracker, not an inventory-on-hand ledger.
+- Grade tabs do not share a consistent schema. Quantity is in column Q on Grade K and Grades 3-4, column Q with a different heading on Grade 1, column P on Grade 2, and column R on Grade 5.
+- Grade K contains 97 populated data rows. Its quantity column is blank on 39 rows; nonblank values include `1/student`, `1/class`, `1 pair/class`, `1 roll/group`, `1 set/group`, bare numbers, `~.25 cup`, and `10-20 items`.
+- The `One Potato, Two Potato` activity demonstrates supported and ambiguous cases together: hand lens `1/student`, several `1/class` entries, and bare values such as `2` and `1` whose scaling basis is not stated.
+- The workbook exists at both the ignored local path `data/Copy of Texas K-5 Materials Tracker.xlsx` and the tracked repository-root path `Copy of Texas K-5 Materials Tracker.xlsx`. The GitHub repository is public; confirm the workbook is approved for public access.
 
 ## Stop Point
 
-After Phase 1 and Phase 2 validation, present the created files, baseline checks, workbook findings or blocker, and open decisions for review. Do not proceed to workbook import, calculations, inventory editing, or later lifecycle phases until the user confirms.
+After Phase 3 planning and risk review, present the execution plan, workbook findings, and open decisions for review. Do not begin Phase 4 implementation until the user confirms.
 
 ## Validation Record
 
@@ -50,4 +56,5 @@ After Phase 1 and Phase 2 validation, present the created files, baseline checks
 - All local `href` and `src` references in `index.html` resolve to project files.
 - The staged whitespace check passed; the initial commit contains only the nine project files listed in Git history.
 - The page has not been rendered in an automated browser in this environment; `README.md` documents opening it directly in a modern browser.
-- Git confirms `data/Copy of Texas K-5 Materials Tracker.xlsx` is ignored. The workbook itself remains unavailable for inspection.
+- OpenXML inspection confirmed nine worksheets, zero formulas, and no on-hand stock columns; Grade K structure and quantity examples are summarized above.
+- Git confirms the local `data/*.xlsx` copy is ignored. A duplicate workbook at the repository root is already tracked in the public GitHub history.

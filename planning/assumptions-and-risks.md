@@ -2,9 +2,9 @@
 
 ## Top Assumptions
 
-1. The workbook has stable identifiers and fields that connect a lab or kit to its materials and quantities.
-2. Quantity rules can be interpreted consistently for class size, including any per-team, fixed-per-class, unit conversion, and rounding cases.
-3. A designated owner can publish a canonical dataset through an internally approved hosting and access-control path.
+1. Each grade sheet's activity title, teacher-page material text, nomenclature, and quantity fields provide the correct material rows for the prototype.
+2. The owner confirms that explicit per-student and per-class quantities may be calculated as written; other quantity expressions need separate rules.
+3. A local proof is useful while an internal shared-hosting and access-control model is selected.
 
 See [PRD-lite validation checkpoints](prd-lite.md#assumptions-and-validation-checkpoints) for how each assumption will be tested.
 
@@ -20,29 +20,34 @@ See [PRD-lite validation checkpoints](prd-lite.md#assumptions-and-validation-che
 
 ### Technical and Data Risks
 
-- **Source unavailable:** The attachment is not currently readable as a workspace file, preventing inspection of its sheets, fields, formulas, and sample records.
-- **Ambiguous quantity model:** Quantities may scale per student, per group, per class, or through mixed rules; a simple multiplier could over- or under-order.
-- **Incompatible units:** Required and on-hand amounts may use different units or packaging sizes; a comparison is invalid without verified conversion rules.
-- **Spreadsheet formula behavior:** Cached formula results can be missing or stale; the displayed value may depend on spreadsheet recalculation.
-- **Data quality:** Blank identifiers, duplicate rows, merged headers, inconsistent labels, hidden sheets, or malformed values may make imports incomplete.
+- **No inventory counts:** None of the nine workbook sheets has an on-hand stock field, so availability and shortage calculations are unsupported.
+- **Different grade schemas:** Grade K uses `Q` for `Qty.`, Grade 1 uses `Q` for `Qty./group`, Grade 2 uses `P` for `Quantity per Group`, Grades 3-4 use `Q` for `Qty.`, and Grade 5 uses `R` for `Qty.`. Parsing every grade as one table would misread data.
+- **Ambiguous quantities:** Grade K has 39 blank quantities among 97 populated data rows. Values include `1/student`, `1/class`, per-group strings, bare numbers, ranges, and approximations. Applying one multiplier to all values could over- or under-estimate needs.
+- **Unit and rounding semantics:** Values can include units such as pairs, rolls, sets, cups, and item ranges. Conversion, package rounding, and class/group interpretation need owner confirmation.
+- **Public workbook exposure:** The workbook is tracked at the root of the public GitHub repository. Confirm public distribution is permitted; if not, removal requires addressing the repository history, not only deleting a new copy.
+- **Data quality:** Blank fields, inconsistent labels, alternate material-name columns, and differently structured grade tabs may make imports incomplete or create duplicates.
 - **Staleness and ownership:** A shared view can mislead if the published data is old or the update owner/process is unclear.
-- **Hosting mismatch:** A local static page cannot by itself publish shared, centrally updated data; the approved internal environment may require a backend or a reviewed static export.
+- **Hosting mismatch:** The local prototype does not provide a shared canonical dataset. GitHub is public, not an approved internal data service.
 
 ### Mitigations
 
-- Inspect the actual workbook before designing a parser or calculation model.
-- Confirm formulas and units with the owner and manually verify normal and boundary examples.
+- Map each grade from its own headers; keep Grade 1-2 per-group quantities unresolved until group-size and rounding rules are approved.
+- Calculate only owner-approved, explicit quantity forms; preserve unsupported source text and label it unresolved.
+- Confirm material name fields, units, and scaling with the owner; manually verify normal and boundary examples.
 - Distinguish missing, invalid, and zero values in data and UI.
 - Reject or clearly report unsupported workbook structures rather than silently dropping rows.
-- Display source and update metadata once a verified publication workflow exists.
+- Do not claim stock availability or shortage until an authoritative stock source exists.
+- Confirm public sharing permission and select approved internal hosting before implementing shared publication.
 
 ## Pre-Build Checklist
 
-- [ ] Place an approved, reviewable workbook copy under `data/` or provide an accessible export.
-- [ ] Confirm the workbook may be processed locally and identify any sensitive fields to omit.
-- [ ] Map sheets, headers, identifiers, material names, quantities, units, and stock fields.
-- [ ] Confirm per-student/per-team/per-class rules, conversions, and rounding with the owner.
-- [ ] Hand-check one typical and one boundary class-size calculation.
+- [x] Place a reviewable workbook copy under `data/`.
+- [x] Inventory sheet names, grade-specific quantity columns, formula count, and stock fields.
+- [ ] Confirm public GitHub distribution is permitted; if not, remove the workbook from public history using an approved process.
+- [x] Map activity, teacher-page material, nomenclature, and quantity columns across all six grade sheets.
+- [ ] Confirm the source-field mappings and quantity semantics for all six grade sheets with the owner.
+- [ ] Confirm how bare numbers, ranges, approximations, and per-group quantities should scale.
+- [ ] Hand-check class-size 1 and a representative larger class for each supported rule.
 - [ ] Decide how the owner publishes updates and how internal stakeholders access the canonical dataset.
-- [ ] Confirm whether the workbook itself or only a normalized export is the runtime source.
-- [ ] Define malformed-file and missing-data messages before enabling import.
+- [ ] Identify an authoritative stock source before planning availability/shortfall features.
+- [ ] Define malformed-file and missing/unsupported-quantity messages before enabling import.
