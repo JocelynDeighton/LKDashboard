@@ -239,13 +239,20 @@ function renderWarnings(result) {
   elements.sourceWarning.hidden = false;
 }
 
-function updateCalculateButton() {
+function hasValidClassSize() {
   const classSize = Number(elements.classSize.value);
-  const validClassSize = Number.isSafeInteger(classSize) && classSize > 0 && elements.classSize.value.trim() !== "";
+  return Number.isSafeInteger(classSize) && classSize > 0 && elements.classSize.value.trim() !== "";
+}
+
+function canCalculate() {
+  return state.quantityMode === "explicit" && state.entries.length > 0 && Boolean(elements.activity.value) &&
+    hasValidClassSize() && elements.ownerConfirmation.checked;
+}
+
+function updateCalculateButton() {
+  const validClassSize = hasValidClassSize();
   elements.classSize.setAttribute("aria-invalid", String(elements.classSize.value !== "" && !validClassSize));
-  elements.calculateButton.disabled = !(
-    state.quantityMode === "explicit" && state.entries.length > 0 && elements.activity.value && validClassSize && elements.ownerConfirmation.checked
-  );
+  elements.calculateButton.disabled = !canCalculate();
 
   if (state.quantityMode === "group") {
     elements.ownerConfirmation.disabled = true;
@@ -258,8 +265,14 @@ function updateCalculateButton() {
     elements.calculationNote.textContent = "Enter a positive whole-number class size to calculate.";
   } else {
     elements.ownerConfirmation.disabled = false;
-    elements.calculationNote.textContent = "Only explicit per-student and per-class quantities with a listed material will be calculated.";
+    elements.calculationNote.textContent = "Supported per-student and per-class quantities update automatically after owner confirmation and a valid class size.";
   }
+}
+
+function updateCalculation() {
+  state.calculated = canCalculate();
+  renderMaterials();
+  updateCalculateButton();
 }
 
 function loadGrade(grade) {
@@ -371,21 +384,15 @@ elements.grade.addEventListener("change", () => {
 });
 
 elements.activity.addEventListener("change", () => {
-  state.calculated = false;
-  renderMaterials();
-  updateCalculateButton();
+  updateCalculation();
 });
 
 elements.classSize.addEventListener("input", () => {
-  state.calculated = false;
-  renderMaterials();
-  updateCalculateButton();
+  updateCalculation();
 });
 
 elements.ownerConfirmation.addEventListener("change", () => {
-  state.calculated = false;
-  renderMaterials();
-  updateCalculateButton();
+  updateCalculation();
 });
 
 elements.form.addEventListener("submit", (event) => {

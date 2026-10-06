@@ -11,7 +11,7 @@ The page loads the pinned SheetJS 0.20.3 browser library from its official CDN, 
 ## Current Scope
 
 - Reads the `Grade K` through `Grade 5` worksheets, capped at rows 1-250 per sheet, and maps fields by each sheet's headers.
-- Calculates only explicit `n/student` and `n/class` quantities, including a stated unit, after the user affirms that the rules for the selected grade were verified with the workbook owner.
+- Automatically updates explicit `n/student` and `n/class` quantities, including a stated unit, after the user affirms that the rules for the selected grade were verified with the workbook owner and enters a valid class size.
 - Keeps Grades 1-2 per-group quantities unresolved because group size and partial-group rounding are not defined.
 - Keeps blank quantities, bare numbers, missing material names, and other unsupported expressions visible and unresolved.
 - Does not compare against stock or report availability or shortages.
